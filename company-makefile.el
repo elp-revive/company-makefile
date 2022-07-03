@@ -1,10 +1,10 @@
 ;;; company-makefile.el --- completion backend for gnu makefiles -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
-;; Maintainer: Noah Peart <noah.v.peart@gmail.com>
+;; Maintainer: Jen-Chieh Shen <jcs090218@gmail.com>
 ;; Last modified: <2019-03-14 19:42:21>
-;; URL: https://github.com/nverno/company-makefile
-;; Package-Requires: 
+;; URL: https://github.com/elp-revive/company-makefile
+;; Package-Requires: ((emacs "26.1") (company "0.8.12"))
 ;; Created: 25 October 2016
 ;; Keywords: convenience, matching
 
@@ -33,14 +33,12 @@
 ;; strictly required, but adornment functions are desinged for company-mode.
 
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib)
-  (require 'subr-x))
+
+(require 'cl-lib)
 (require 'make-mode)
-(require 'company nil t)
-(defvar company-require-match)
-(defvar company-backends)
-(declare-function company-doc-buffer "company")
+(require 'subr-x)
+
+(require 'company)
 
 (defgroup company-makefile nil
   "Completion backend for gnu makefiles."
@@ -53,7 +51,7 @@
   :group 'company-makefile)
 
 (defcustom company-makefile-dynamic-complete t
-  "Offer dynamic completions for macros/targets. Invalidates 
+  "Offer dynamic completions for macros/targets. Invalidates
 `makefile-need-macro-pickup' and `makefile-need-target-pickup' after ':' and '='
 respectively.'"
   :type 'boolean
@@ -117,8 +115,8 @@ TYPE should be one of [macro|target] to align with `make-mode' variables."
              (,pickup)
              (setq ,name
                    (cl-loop for v in (mapcar 'car ,table)
-                      do (add-text-properties 0 1 ,props v)
-                      collect v))))))))
+                            do (add-text-properties 0 1 ,props v)
+                            collect v))))))))
 
 (company-makefile--dyn-fn "macro" (list 'annot "<Local Var>"))
 (company-makefile--dyn-fn "target" (list 'annot "<Target>"))
@@ -209,7 +207,7 @@ TYPE should be one of [macro|target] to align with `make-mode' variables."
         (list (car bnds) (cdr bnds) (assq 'keyword company-makefile-data)
               :annotation-function #'company-makefile--annotation)))))
 
-;; when dynamically completing, rebind ":" and "=" to 
+;; when dynamically completing, rebind ":" and "=" to
 ;; invalidate make-mode dynamic completion tables for macros/targets
 (when company-makefile-dynamic-complete
   (with-eval-after-load 'makefile-mode
@@ -221,26 +219,14 @@ TYPE should be one of [macro|target] to align with `make-mode' variables."
                            (setq ,pickup t)
                            (self-insert-command arg))))))
       (define-key makefile-mode-map "=" (insert-fn "=" makefile-need-macro-pickup))
-      (define-key makefile-mode-map ":"
-        (insert-fn ":" makefile-need-target-pickup)))))
+      (define-key makefile-mode-map ":" (insert-fn ":" makefile-need-target-pickup)))))
 
 ;;;###autoload
 (defun company-makefile-init ()
-  "Update `completion-at-point-functions' and `company' variables when \
-`company' is enabled."
+  "Update `completion-at-point-functions' and `company' variables when `company'
+is enabled."
   (remove-hook 'completion-at-point-functions 'makefile-completions-at-point 'local)
-  (add-hook 'completion-at-point-functions 'company-makefile-capf nil 'local)
-  (when (featurep 'company)
-    (setq-local company-require-match 'never)
-    (make-local-variable 'company-backends)
-    (cl-pushnew 'company-capf company-backends)))
-
-;; ;;;###autoload
-;; (add-hook 'makefile-mode-hook 'company-makefile-init)
+  (add-hook 'completion-at-point-functions 'company-makefile-capf nil 'local))
 
 (provide 'company-makefile)
 ;;; company-makefile.el ends here
-
-;; Local Variables:
-;; lisp-indent-function: common-lisp-indent-function
-;; End:
