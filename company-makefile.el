@@ -1,4 +1,4 @@
-;;; company-makefile.el --- completion backend for gnu makefiles -*- lexical-binding: t; -*-
+;;; company-makefile.el --- completion backend for gnu makefiles  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2016-2022  Noah Peart
 ;; Copyright (C) 2022  Shen, Jen-Chieh
