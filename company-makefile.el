@@ -1,11 +1,13 @@
 ;;; company-makefile.el --- completion backend for gnu makefiles -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2016-2022  Noah Peart
+;; Copyright (C) 2022  Shen, Jen-Chieh
+
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Maintainer: Jen-Chieh Shen <jcs090218@gmail.com>
-;; Last modified: <2019-03-14 19:42:21>
 ;; URL: https://github.com/elp-revive/company-makefile
+;; Version: 0.0.1
 ;; Package-Requires: ((emacs "26.1") (company "0.8.12"))
-;; Created: 25 October 2016
 ;; Keywords: convenience, matching
 
 ;; This file is not part of GNU Emacs.
