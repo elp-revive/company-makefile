@@ -29,8 +29,6 @@
 
 ;;; Commentary:
 
-;; [![Build Status](https://travis-ci.org/nverno/company-makefile.svg?branch=master)](https://travis-ci.org/nverno/company-makefile)
-
 ;; Replacement completion at point for `makefile-gmake-mode'. `company' isn't
 ;; strictly required, but adornment functions are desinged for company-mode.
 
@@ -59,14 +57,13 @@ respectively.'"
   :type 'boolean
   :group 'company-makefile)
 
-(eval-and-compile
-  (defconst company-makefile-dir
-    (file-name-directory
-     (cond
-      (load-in-progress load-file-name)
-      ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
-       byte-compile-current-file)
-      (:else (buffer-file-name))))))
+(defconst company-makefile-dir
+  (file-name-directory
+   (cond
+    (load-in-progress load-file-name)
+    ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
+     byte-compile-current-file)
+    (:else (buffer-file-name)))))
 
 ;; ------------------------------------------------------------
 ;;* Completion candidates
