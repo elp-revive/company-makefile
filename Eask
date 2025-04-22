@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "company-makefile"
          "0.0.1"
          "completion backend for gnu makefiles")
